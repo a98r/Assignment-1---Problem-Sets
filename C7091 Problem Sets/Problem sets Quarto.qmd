@@ -1,0 +1,297 @@
+---
+title: "Problem Sets"
+format: html
+editor: visual
+---
+
+## Problem 1
+
+```{r}
+data(mpg)
+
+# Scatter plot with base R
+plot(mpg$disp1, mpg$hwy, col = as.factor(mpg$Year), 
+     xlab = "Displacement", ylab = "Highway Miles per Gallon", pch = 19)
+legend("topright", legend = unique(mpg$Year), col = unique(as.factor(mpg$Year)), pch = 19)
+
+# Use base R to filter the data where cyl equals 8
+subset(mpg, cy1 = '8')
+```
+
+This is the first problem. It has multiple errors. See the code below which I have changed, with comments attached.
+
+```{r}
+data(mpg)
+# Need to install packages to get the mpg Data from ggplot2, good practice to use the help function
+help("install.packages")
+
+#Installed tidyverse package, which contains ggplot2
+install.packages(pkgs="tidyverse")
+
+install.packages(pkgs="ggplot2")
+
+library(ggplot2)
+
+# Scatter plot with base R
+plot(mpg$displ, mpg$hwy, 
+     col = as.factor(mpg$year), 
+     xlab = "Displacement", ylab = "Highway Miles per Gallon", pch = 19)
+legend("topright", legend = unique(mpg$Year), col = unique(as.factor(mpg$Year)), pch = 19)
+#Spelling mistakes, with 'disp1' and 'Year', changed to 'displ' and 'year'
+
+# Use base R to filter the data where cyl equals 8
+subset(mpg, cyl == '8')
+
+#There was an spelling mistake with 'cyl', it was spelt 'cy1'. Also the equal function was not correct, changed from '=' to '=='.
+
+#Using indexing and regular expression tools in base R, extend the code to calculate the proportions of manual and automatic shift cars in the study
+table(mpg$trans)
+trans_counts <- table(mpg$trans)
+selected_trans <- trans_counts[c("auto", "manual")]
+auto_proportion <- sum(auto) / sum(trans_counts)
+manual_proportion <-sum(manual) / sum(trans_counts)
+                                     
+print(auto_proportion)*100
+print(manual_proportion)*100
+
+```
+
+In order for the code to run, it was important to get the data for mpg. This can be found in the ggplot2 package. I installed the "tidyverse" package to get the data, as tidyverse contains ggplot2.
+
+After installing ggplot2, the mpg data was entered in to the r script. I then had to deal with several errors in the original code. Two spelling mistakes were producing errors. Firstly, "disp1", was changed to the correct column title: "displ". Secondly, "Year" was changed to "year" as R is capital sensitive. This produced a scatter plot, for displ and year correctly which can be seen in the plots location.
+
+The next error I encountered was using base R to filter the data where cyl is equal to 8. Firstly, the column title "cyl" was spelt incorrectly, as "cy1". This meant that R was not able to read the data and produced an error. Secondly, the operator: "=" is not correct, R needs this to be "==" to mean equal to. Once I changed the spelling mistake and operator, it gave me the data for vehicles with 'cyl' equal to 8.
+
+The final part to problem set number 1 is: 'Using indexing and regular expression tools in **base R**, extend the code to calculate the proportions of manual and automatic shift cars in the study'. Using the function, table(), I was able to extrapolate the transmission data type from the mpg data. This gave me values for auto and manual transmissions. In order to get proportions for transmission, I divided each individual transmission type by the total transmission count. The proportion of automatic transmission vehicles in the data was 67.09402%, and manual transmission vehicles in the data was 32.90598%.
+
+## 
+
+## Problem 2:
+
+```{r}
+#Volume of a cylinder in pseudocode, height=3.2cm, radius =5.5cm  
+#INPUT (r) 
+#INPUT (h) 
+#SET (A) = pi * r * r 
+#SET (V) = area * h 
+#PRINT (V) 
+END  
+radius <- 5.5 
+height <- 3.2  
+area <- 3.141 * 5.5 * 5.5 
+volume <- 3.141 * 5.5 * 5.5 * 3.2  
+print(volume)
+```
+
+For calculating volume of a cylinder in pseudocode, it is important to make the code detailed and readable. A good way to make the code clear for the reader is by creating a step by step list. A good place to start is by inputting values for height and radius. The next step is to set values for area and volume, using the formula for the volume of a cylinder. Finally, printing the volume.
+
+In pseudocode, each new line starts with a sequence command, like INPUT. See the above code chunk, where i have utilised commands to make it easy to read, using simple syntax.
+
+## Problem 3
+
+The pwr package help function highlights that it in order to use Cohen’s d value in a pwr.t.test, the two groups being compared in the must be of equal size. The d value tells you the effect size of the T test. A large d value will highlight that the two entities being compared are very different.
+
+One example of the pwr.t.test, taken from Cohen (1988):
+
+```{r}
+pwr.t.test(d=0.2,n=60,sig.level=0.10,type="one.sample",alternative="two.sided")
+```
+
+This example has a small d value, highlighting that the effect size of the sample is not significantly different from a known data set.
+
+## Problem 4
+
+What is the role of set.seed() function?
+
+Set.seed() allows you to generate a series of random numbers in a matrix that are reproducible. It does this by generating random numbers that will be the same each time you run the code. Without the seed the each time you run the code the numbers will be different, impacting the matrix.
+
+Why does calculating the mean of the copied original matrix return a numeric value while the mean of the same matrix when missing values are filled from the list returns `NA`?
+
+When calculating the mean, if there are missing values as NA, unless outlined in the code will produce an NA value because R can't compute with a missing value present. The copied matrix returns a numeric value because there are no NA values present, so R is able to compute all values and divide by 9 (as it is a 3x3 matrix).
+
+Please fix the code such that `mean_of_original_copy` and `mean_matrix` are equal
+
+```{r}
+print(mean_of_original_copy)
+```
+
+```{r}
+print(mean_matrix)
+```
+
+```{r}
+mean_matrix <- mean(c(2,2,3,2,5,6,7,4,8)) 
+print(mean_matrix)  
+```
+
+The Mean_matrix now prints the same as the mean of the original copy, after inputting the numbers correctly.
+
+## Problem 5:
+
+Explain why this function is not working and return the working equivalent. Interpret what the estimate means and rank the species
+
+```{r}
+# Load necessary package
+install.packages('emmeans')
+library(emmeans)
+
+run_anova_posthoc <- function() {
+  # Perform ANOVA on the iris dataset
+  anova_result <- aov(Sepal.Length ~ Species, data = iris)
+  
+  # Perform post-hoc test using emmeans
+  posthoc_result <- emmeans(anova_result, pairwise ~ Species)
+  
+  comparisons <- as.data.frame(posthoc_result$contrasts)
+  
+  #There was an error in the comparisons_df, where Species = comparisons$species, this was wrong and I changed it to comparisons$contrast
+  print(comparisons)
+  comparisons_df <- data.frame(Species = comparisons$contrast,
+                               estimate = comparisons$estimate,
+                               p.value = comparisons$p.value)
+  
+  return(comparisons_df)
+}
+
+
+run_anova_posthoc()
+```
+
+The reason why the code was not working was because of an error in the comparisons_df. The original data frame, species = comparisons\$species, is an error. The species column does not exist in this object. Therefore using the emmeans package and the contrast column, it provides no errors and runs the code without issue.
+
+The estimate means: The estimated difference between the two variables. The Setosa-Versicolor estimate is -0.930, meaning that on average, the Sepal Length for Setosa is -0.930 shorter than the Sepal Length of Versicolor.
+
+The species rank is: Virginica has the highest Sepal Length of the three species. The second highest Sepal Length is Virginica. The shortest is Setosa.
+
+## Problem 6:
+
+Using the iris dataset in R, conduct an anova of sepal length ‘by hand’ and report the F statistic. Feel free to use other packages for **data wrangling/grouping only**, but for each function used, appropriately comment on what it does and which package it comes from. Show your R code.
+
+```{r}
+library(datasets)
+data("iris")
+summary("iris")
+
+#Calculate number of Species
+n.groups <- length(unique(iris$Species))
+
+#Number of inviduals
+n.individuals <- nrow(iris)
+
+#K-1 = difference between groups
+df.between <- n.groups -1
+
+#ntotal - k = Difference within groups
+df.within <- n.individuals - n.groups
+
+#Gives us the Sepal Length Mean
+mean.total <- mean(iris$Sepal.Length)
+
+#Mean per group
+help(tapply)
+mean.per.group <- tapply(iris$Sepal.Length, iris$Species, mean)
+
+#SS between groups
+n.per.group <- table(iris$Species)
+ss.between <- sum(n.per.group * (mean.per.group - mean.total)^2)
+
+#SS within groups
+ss.within <- sum((iris$Sepal.Length - ave(iris$Sepal.Length, iris$Species, FUN = mean))^2)
+
+#MS between
+ms.between <- ss.between/ df.between
+
+#MS within
+ms.within <- ss.within/df.within
+
+#F value=
+(myF <- ms.between/ms.within)
+
+#Compared to Anova function in R:
+
+anova_model <- aov(Sepal.Length ~ Species, data = iris)
+summary(anova_model)
+```
+
+In order to make the Anova model 'By hand' to calculate variance for Sepal Length in different species, I made the code above. To finish with the correct F value it was important to systematically go through the sources of variation table and create values for the formula.
+
+The first thing I want to establish is the number of groups (k), in this case it is the number of species. This is the information that is related to Sepal Length, the variable we are conducting the Anova test on. Number of Species = 3.
+
+The next thing to establish was number of individuals (ntotal), this is 150.
+
+From this we are able to create degrees of freedom, the first step towards an F value. Degrees of freedom between groups is equal to K-1, or Number of species -1, in this case. Which equals 2. The degrees of freedom within groups is equal to ntotal - k, or number of individuals - number of species which equals 147.
+
+To create the sum of squares, the next step is to create a mean for Sepal Length, which came to 5.84. To get mean per group, I did not want to create a mean for the Iris data set, so instead made mean for each Species group, using the tapply function from Base R. It very simply, splits the data in to 3 parts. 1.) Data, the area you want to analyse, in this case Sepal Length. 2.) Group, splits the data into categories, in this case Species. 3.) Function, I wanted to find the mean of each species, so added mean to the tapply function. This gave me Means for Setosa, Versicolor and Viriginica, the three species for Sepal Length, which were equal to 5.01, 5.04 and 6.59 respectively.
+
+The next step is to calculate the sum of squares between and within. Firstly, by calculating the number of individuals in each species, at 50 each. Using this information you can calculate the Sum of squares between groups, by multiplying the number of individuals in each species by the mean for each species - mean total. Next, you can calculate the sum of squares within groups by summing the squared differences of the Sepal Length and the average Sepal Length for it's species. I used the ave() function to find the average of Sepal Length and Species, this comes from the base r package.
+
+The final step to an F value, is by creating MS.between and MS.within. Firstly, by calculating Sum of squares between divided by degrees of freedom between to get MS. between. Then by calculating sum of squares within divided by degrees of freedom within, creating MS.within. Divide, MS.between by MS. within to get the F value of 119.264.
+
+To prove that this is equal to the aov() function, I performed this and got an F value of 119.3. Showing that the code works and that the Anova by hand is accurate.
+
+## Problem 7:
+
+Write your own question similar in spirit, difficulty and scope to questions 3-6 above. Provide a full question including any code prompts. Also supply a full answer including any commented code required.
+
+Compare level of C02 uptake in Chilled and Non-chilled environments.
+
+```{r}
+library(datasets)
+CO2
+library(tidyverse)
+
+#Create a Boxplot to show uptake of C02 in nonchilled and chilled environments
+ggplot(CO2, aes(x = Treatment, y = uptake)) +
+  geom_boxplot()
+
+#Show Variance
+CO2 %>%
+  group_by(Treatment) %>%
+  summarise(var(uptake, na.rm = TRUE))
+
+#Anova Test 
+model <- aov(uptake ~ Treatment, data = CO2)
+summary(model)
+
+#Post Hoc Tukey Test
+TukeyHSD(model)
+```
+
+I want to see if the environment of the plant has an impact on the uptake of CO2.
+
+A good first step is to see if there is a visual difference in the data, a box-plot creates a clear snapshot of the two treatments and its impact on the uptake. As you can see in figure 1, the non-chilled treatment stimulates greater uptake then the chilled treatment.
+
+I want to know if there is a significant difference in the treatments and their impact on the uptake, so I performed a variance test to see if variance in uptake results had a significant impact on the results. There was no significance in the variation for either environment, meaning that I could proceed with the Anova test.
+
+The Anova test resulted in a very significant 0.003 P value, meaning that there is a significant uptake difference between the two environments. The TukeyHSD test further confirms this.
+
+## Problem 8:
+
+Write your own question similar in spirit, difficulty and scope to questions 3-6 above but involving the creation nested lists and indexing of elements from within the deepest nest. the list must have more than 2 levels of nesting and no names. Provide a full question including any code prompts. Also supply a full answer including any commented code required.
+
+Lists are also referred to as recursive vectors (Matloff 2011).
+
+My question:
+
+Using the mtcars dataset in R, created a nested list with at least three levels of nesting.
+
+To answer this question, I want to first split the nested list into three levels:
+
+1.) The first three car models in one sublist
+
+2.) The mpg and hp values for the first three car models in another sublist
+
+3.) A third sublist containing the names of the car models in pairs.
+
+```{r}
+data("mtcars")
+View(data)
+
+nested_mtcars <- list(
+  list(rownames(mtcars)[1:3]), 
+  list(mtcars$mpg[1:3], mtcars$hp[1:3]),
+  list(C(rownames(mtcars)[1], rownames(mtcars)[2]),
+               c(rownames(mtcars)[3], rownames(mtcars)[1]))
+)
+
+```
